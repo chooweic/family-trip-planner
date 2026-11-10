@@ -259,7 +259,7 @@ describe("admin (Alice in Group A)", () => {
       assert.equal((await q(`select 1 from votes where idea_id = $1`, [I.a1])).length, 3);
       // Alice Yes x2 + Bob Maybe x1 + Kid No x1 = 5. Max = 2 x (2 + 1 + 1) = 8.
       const t = await one(`select * from vote_totals($1) where idea_id = $2`, [T.A, I.a1]);
-      assert.deepEqual(t, { idea_id: I.a1, score: 5, max_score: 8, votes_cast: 3 });
+      assert.deepEqual(t, { idea_id: I.a1, score: 5, max_score: 8, votes_cast: 3, status: "open" });
     }));
 
   test("publishes the plan: then members see it, and only one plan per trip can be published", () =>
@@ -297,6 +297,64 @@ describe("admin (Alice in Group A)", () => {
     as(db, U.alice, async ({ attempt, count }) => {
       assert.equal(await count(`select 1 from trips where id = $1`, [T.B]), 0);
       assert.match(String(await attempt(`select decide($1, 'veto', 'nope nope')`, [I.b1])), DENIED);
+    }));
+});
+
+describe("voting closes (issue #1)", () => {
+  const reveal = (sudo, trip) => sudo((q) => q(`update trips set votes_revealed_at = now() where id = $1`, [trip]));
+
+  test("after the reveal a member can't add, change or remove a vote", () =>
+    as(db, U.bob, async ({ attempt, count, sudo }) => {
+      await reveal(sudo, T.A);
+      assert.match(String(await attempt(`insert into votes (idea_id, member_id, value) values ($1, $2, 2)`, [I.a2, M.bobA])), DENIED);
+      assert.equal(await count(`update votes set value = 2 where idea_id = $1 and member_id = $2 returning value`, [I.a1, M.bobA]), 0);
+      assert.equal(await count(`delete from votes where idea_id = $1 and member_id = $2 returning value`, [I.a1, M.bobA]), 0);
+      const real = await sudo((q) => q(`select value from votes where idea_id = $1 and member_id = $2`, [I.a1, M.bobA]));
+      assert.equal(real[0].value, 1);
+    }));
+
+  test("nobody can vote on a vetoed idea, or change or remove a vote on one", () =>
+    as(db, U.alice, async ({ q, attempt, count, become }) => {
+      await q(`select decide($1, 'veto', 'Too far from the hotel')`, [I.a1]);
+      await q(`select decide($1, 'veto', 'Over budget')`, [I.a2]);
+      assert.match(String(await attempt(`insert into votes (idea_id, member_id, value) values ($1, $2, 2)`, [I.a2, M.kid])), DENIED);
+      await become(U.bob);
+      assert.match(String(await attempt(`insert into votes (idea_id, member_id, value) values ($1, $2, 2)`, [I.a2, M.bobA])), DENIED);
+      assert.equal(await count(`update votes set value = 2 where idea_id = $1 and member_id = $2 returning value`, [I.a1, M.bobA]), 0);
+      assert.equal(await count(`delete from votes where idea_id = $1 and member_id = $2 returning value`, [I.a1, M.bobA]), 0);
+    }));
+
+  test("an author can't edit their idea after the deadline, but an admin can", () =>
+    as(db, U.bob, async ({ count, become, sudo }) => {
+      const late = id(60);
+      await sudo((q) => q(`insert into ideas (id, trip_id, author_member_id, title) values ($1, $2, $3, 'Bob''s Penang idea')`, [late, T.closed, M.bobA]));
+      assert.equal(await count(`update ideas set cost = 999 where id = $1 returning id`, [late]), 0);
+      await become(U.alice);
+      assert.equal(await count(`update ideas set note = 'fixed the link' where id = $1 returning id`, [late]), 1);
+    }));
+
+  test("an author can't edit their idea after the reveal or once it's vetoed, but an admin can", () =>
+    as(db, U.bob, async ({ q, count, become, sudo }) => {
+      await reveal(sudo, T.A);
+      assert.equal(await count(`update ideas set title = 'Swapped' where id = $1 returning id`, [I.a2]), 0);
+      await become(U.alice);
+      assert.equal(await count(`update ideas set note = 'admin note' where id = $1 returning id`, [I.a2]), 1);
+      await sudo((s) => s(`update trips set votes_revealed_at = null where id = $1`, [T.A]));
+      await q(`select decide($1, 'veto', 'Over budget')`, [I.a2]);
+      await become(U.bob);
+      assert.equal(await count(`update ideas set title = 'Swapped' where id = $1 returning id`, [I.a2]), 0);
+    }));
+
+  test("vote_totals keeps vetoed ideas and says their status", () =>
+    as(db, U.alice, async ({ q, become }) => {
+      await q(`select decide($1, 'veto', 'Too far from the hotel')`, [I.a1]);
+      await q(`update trips set votes_revealed_at = now() where id = $1`, [T.A]);
+      await become(U.bob);
+      const totals = await q(`select idea_id, status, score from vote_totals($1) order by idea_id`, [T.A]);
+      assert.deepEqual(totals, [
+        { idea_id: I.a1, status: "out", score: 5 },
+        { idea_id: I.a2, status: "open", score: 0 },
+      ]);
     }));
 });
 
