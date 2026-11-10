@@ -1,0 +1,13 @@
+{
+  // Cloudflare Worker: serves the built page from ./dist and handles /api/* routes.
+  // Secrets are never committed. Set them with: npx wrangler secret put <NAME>
+  "name": "family-trip-planner",
+  "main": "src/worker/index.js",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  }
+}

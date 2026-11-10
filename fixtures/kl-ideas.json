@@ -1,0 +1,78 @@
+{
+  "_note": "SAMPLE DATA, not from the real family. Step 0 was skipped. Coordinates, opening hours, durations and costs are approximate and for testing only. Don't use them for the real trip without checking.",
+  "trip": {
+    "location": "Kuala Lumpur, Malaysia",
+    "start_date": "2026-12-18",
+    "end_date": "2026-12-21",
+    "arrive_at_stay": "2026-12-18T14:00",
+    "leave_stay": "2026-12-21T13:00",
+    "voting_deadline": "2026-12-12T23:59",
+    "shortlist_threshold": 0.5,
+    "travel_factor": 1.4,
+    "travel_overhead_min": 10
+  },
+  "members": [
+    { "id": "m-dad", "nickname": "Dad", "role": "admin", "weight": 2, "managed_by": null },
+    { "id": "m-mum", "nickname": "Mum", "role": "admin", "weight": 2, "managed_by": null },
+    { "id": "m-kid1", "nickname": "Kid 1", "role": "member", "weight": 1, "managed_by": null },
+    { "id": "m-kid2", "nickname": "Kid 2", "role": "member", "weight": 1, "managed_by": "m-mum" }
+  ],
+  "ideas": [
+    { "id": "i-batu", "kind": "activity", "author": "m-dad", "title": "Batu Caves", "note": "Temple caves and the big gold statue. Go early before the heat.", "lat": 3.2379, "lng": 101.6840, "duration_min": 120, "suits": "morning", "cost_myr": 0, "open": { "all": ["07:00", "21:00"] } },
+    { "id": "i-skybridge", "kind": "activity", "author": "m-kid1", "title": "Petronas Towers skybridge", "note": "See the city from the bridge between the towers.", "lat": 3.1579, "lng": 101.7116, "duration_min": 90, "suits": "any", "cost_myr": 400, "open": { "tue-sun": ["09:00", "21:00"], "mon": null } },
+    { "id": "i-aquaria", "kind": "activity", "author": "m-kid2", "title": "Aquaria KLCC", "note": "Shark tunnel! Good if it rains.", "lat": 3.1537, "lng": 101.7130, "duration_min": 120, "suits": "afternoon", "cost_myr": 300, "open": { "all": ["10:00", "20:00"] } },
+    { "id": "i-birdpark", "kind": "activity", "author": "m-kid1", "title": "KL Bird Park", "note": "Walk-in aviary, birds fly around you.", "lat": 3.1430, "lng": 101.6880, "duration_min": 150, "suits": "morning", "cost_myr": 250, "open": { "all": ["09:00", "18:00"] } },
+    { "id": "i-jalanalor", "kind": "activity", "author": "m-mum", "title": "Jalan Alor food street", "note": "Hawker dinner, satay and durian.", "lat": 3.1456, "lng": 101.7090, "duration_min": 90, "suits": "evening", "cost_myr": 150, "open": { "all": ["17:00", "23:59"] } },
+    { "id": "i-sunway", "kind": "activity", "author": "m-kid2", "title": "Sunway Lagoon water park", "note": "Whole day of slides.", "lat": 3.0697, "lng": 101.6070, "duration_min": 360, "suits": "any", "cost_myr": 700, "open": { "all": ["10:00", "18:00"] } },
+    { "id": "i-genting", "kind": "activity", "author": "m-kid1", "title": "Genting Highlands theme park", "note": "Cool weather and rides up the mountain.", "lat": 3.4236, "lng": 101.7932, "duration_min": 420, "suits": "any", "cost_myr": 900, "open": { "all": ["10:00", "19:00"] } },
+    { "id": "i-centralmkt", "kind": "activity", "author": "m-mum", "title": "Central Market and Petaling Street", "note": "Crafts, souvenirs and old shophouses.", "lat": 3.1456, "lng": 101.6954, "duration_min": 120, "suits": "afternoon", "cost_myr": 100, "open": { "all": ["10:00", "21:30"] } },
+    { "id": "i-ecopark", "kind": "activity", "author": "m-dad", "title": "KL Forest Eco Park canopy walk", "note": "Rainforest in the middle of the city.", "lat": 3.1530, "lng": 101.7030, "duration_min": 90, "suits": "morning", "cost_myr": 0, "open": { "all": ["07:00", "18:00"] } },
+    { "id": "i-theanhou", "kind": "activity", "author": "m-mum", "title": "Thean Hou Temple", "note": "Lanterns and a nice view.", "lat": 3.1217, "lng": 101.6878, "duration_min": 60, "suits": "any", "cost_myr": 0, "open": { "all": ["09:00", "18:00"] } },
+    { "id": "i-merdeka", "kind": "activity", "author": "m-dad", "title": "Merdeka Square", "note": "History stop, quick photos.", "lat": 3.1478, "lng": 101.6935, "duration_min": 45, "suits": "any", "cost_myr": 0, "open": { "all": ["00:00", "23:59"] } },
+    { "id": "i-kidzania", "kind": "activity", "author": "m-kid2", "title": "KidZania", "note": "Pretend jobs, kids run the city.", "lat": 3.1580, "lng": 101.6130, "duration_min": 300, "suits": "any", "cost_myr": 500, "open": { "all": ["10:00", "17:00"] } },
+    { "id": "s-klcc", "kind": "stay", "author": "m-mum", "title": "Serviced apartment near KLCC", "note": "Walk to the towers and park. Has a kitchen.", "lat": 3.1560, "lng": 101.7150, "cost_myr": 1800 },
+    { "id": "s-bukitbintang", "kind": "stay", "author": "m-dad", "title": "Hotel in Bukit Bintang", "note": "Near Jalan Alor and the monorail.", "lat": 3.1466, "lng": 101.7100, "cost_myr": 1500 },
+    { "id": "s-sentral", "kind": "stay", "author": "m-dad", "title": "Hotel at KL Sentral", "note": "Train hub, easy airport and Batu Caves trains.", "lat": 3.1340, "lng": 101.6860, "cost_myr": 1200 },
+    { "id": "s-chowkit", "kind": "stay", "author": "m-dad", "title": "Budget hotel in Chow Kit", "note": "Cheapest option.", "lat": 3.1650, "lng": 101.6980, "cost_myr": 700 }
+  ],
+  "votes": {
+    "_order": ["m-dad", "m-mum", "m-kid1", "m-kid2"],
+    "_values": "2 = Yes, 1 = Maybe, 0 = No, null = didn't vote (counts as 0)",
+    "i-batu": [2, 2, 1, 0],
+    "i-skybridge": [1, 2, 2, 2],
+    "i-aquaria": [1, 1, 2, 2],
+    "i-birdpark": [0, 1, 2, 2],
+    "i-jalanalor": [2, 1, 0, 1],
+    "i-sunway": [0, 0, 2, 2],
+    "i-genting": [1, 0, 2, 2],
+    "i-centralmkt": [2, 2, 0, 0],
+    "i-ecopark": [2, 1, 1, null],
+    "i-theanhou": [1, 1, 0, 0],
+    "i-merdeka": [1, 0, 0, 1],
+    "i-kidzania": [1, 1, 2, 2],
+    "s-klcc": [2, 2, 2, 1],
+    "s-bukitbintang": [1, 2, 1, 1],
+    "s-sentral": [2, 1, 0, 0],
+    "s-chowkit": [1, 0, 0, 0]
+  },
+  "decisions": [
+    { "idea": "i-genting", "kind": "veto", "by": "m-mum", "reason": "About an hour each way and a full day. Too much for a 4-day trip." }
+  ],
+  "expected": {
+    "_note": "Hand-worked results for the tests. Max score = 2 x (2+2+1+1) = 12, so the 50% threshold is 6.",
+    "max_score": 12,
+    "scores": { "i-batu": 9, "i-skybridge": 10, "i-aquaria": 8, "i-birdpark": 6, "i-jalanalor": 7, "i-sunway": 4, "i-genting": 6, "i-centralmkt": 8, "i-ecopark": 7, "i-theanhou": 4, "i-merdeka": 3, "i-kidzania": 8, "s-klcc": 11, "s-bukitbintang": 8, "s-sentral": 6, "s-chowkit": 2 },
+    "shortlist": ["i-skybridge", "i-batu", "i-aquaria", "i-centralmkt", "i-kidzania", "i-jalanalor", "i-ecopark", "i-birdpark", "s-klcc", "s-bukitbintang", "s-sentral"],
+    "out": { "i-genting": "vetoed (scored 6, would have made the shortlist)", "i-sunway": "below threshold (4)", "i-theanhou": "below threshold (4)", "i-merdeka": "below threshold (3)", "s-chowkit": "below threshold (2)" },
+    "edge_cases": [
+      "i-birdpark and s-sentral score exactly 6 (50%), so they're IN.",
+      "i-ecopark has a missing vote (Kid 2), which counts as 0. 7 is still IN.",
+      "i-genting reaches the threshold but is vetoed, so it's OUT with the reason shown.",
+      "i-sunway is both kids' top pick but loses to the parents' weight. This is the 'fair hearing' test case.",
+      "The skybridge is closed on Mondays, and 21 Dec 2026 is a Monday, so the planner must not place it on day 4.",
+      "Jalan Alor opens only in the evening.",
+      "KidZania (5 h) and Batu Caves are far from KLCC, so they test how the planner groups days and the 'couldn't place' list.",
+      "The stay comparison runs for the top 3 stays: s-klcc, s-bukitbintang, s-sentral."
+    ]
+  }
+}
