@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "deploy": "vite build && wrangler deploy",
-    "test": "node --test test/"
+    "test": "node --test \"test/**/*.test.js\""
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.16",
