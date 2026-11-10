@@ -121,6 +121,17 @@ describe("outsider (Carol is not in Group A)", () => {
       assert.equal(await count(`delete from groups where id = $1 returning id`, [G.A]), 0);
       assert.equal(await count(`delete from votes where idea_id = $1 returning idea_id`, [I.a1]), 0);
     }));
+
+  test("can't call the internal helpers: only decide and vote_totals are in the API schema", () =>
+    as(db, U.carol, async ({ attempt, q }) => {
+      // These used to answer for any UUID, revealing Group A's id and vote state.
+      assert.match(String(await attempt(`select public.trip_group($1)`, [T.A])), /does not exist/);
+      assert.match(String(await attempt(`select public.profile_in_group($1, $2)`, [U.alice, G.A])), /does not exist/);
+      const inPublic = await q(
+        `select proname from pg_proc where pronamespace = 'public'::regnamespace order by proname`,
+      );
+      assert.deepEqual(inPublic.map((r) => r.proname), ["decide", "vote_totals"]);
+    }));
 });
 
 describe("member (Bob in Group A)", () => {
